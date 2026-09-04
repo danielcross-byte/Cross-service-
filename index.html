@@ -18,9 +18,9 @@
 .hero{background:linear-gradient(145deg,#202024,#111114);border:1px solid #303037;border-radius:24px;padding:20px;box-shadow:0 16px 50px #0008;margin-bottom:12px}.bike{display:flex;gap:12px;align-items:center}.avatar{width:48px;height:48px;border-radius:15px;background:var(--accent);display:grid;place-items:center;color:#111;font-size:25px}.bike b{font-size:18px}.bike small{display:block;color:var(--muted);margin-top:2px}
 .timerow{display:flex;align-items:end;justify-content:space-between;margin:22px 0 16px}.hours{font-size:58px;font-weight:900;letter-spacing:-.055em;line-height:.9}.hours small{font-size:15px;color:var(--muted);letter-spacing:0;font-weight:700}.update{display:flex;gap:8px}.update input{flex:1;min-width:0;background:#0d0d0f;border:1px solid #36363c;color:#fff;border-radius:13px;padding:13px 14px;font-size:18px;outline:none}.update input:focus{border-color:#777}.primary{background:var(--accent);color:#111;border:0;border-radius:13px;padding:13px 16px;font-weight:900}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#0e0e10;border:1px solid #29292e;border-radius:14px;padding:11px}.stat b{font-size:25px;display:block}.stat span{font-size:12px;color:var(--muted)}
-.red{color:var(--danger)}.yellow{color:var(--warn)}.green{color:var(--ok)}
+.red{color:var(--danger)}.yellow{color:var(--warn)}.green{color:var(--ok)}.neutral{color:#c9c9cf}
 .section{display:flex;justify-content:space-between;align-items:center;margin:22px 3px 9px}.section h2{font-size:20px;margin:0;letter-spacing:-.02em}.section small{color:var(--muted)}
-.card{background:rgba(21,21,24,.94);border:1px solid var(--line);border-radius:20px;padding:4px 16px}.service{display:grid;grid-template-columns:13px 1fr auto auto;gap:11px;align-items:center;padding:15px 0;border-bottom:1px solid var(--line)}.service:last-child{border-bottom:0}.dot{width:12px;height:12px;border-radius:50%}.dot.r{background:var(--danger);box-shadow:0 0 10px #ff5b6355}.dot.y{background:var(--warn)}.dot.g{background:var(--ok)}.name{font-weight:850;font-size:15px}.meta{font-size:12px;color:var(--muted);line-height:1.35;margin-top:3px}.badge{font-size:11px;font-weight:850;padding:6px 8px;border-radius:8px;background:#242428;white-space:nowrap}.donebtn{width:38px;height:38px;border-radius:12px;background:#242428;color:#fff;border:1px solid #333;display:grid;place-items:center;font-size:17px}.history{padding:8px 16px}.hist{padding:11px 0;border-bottom:1px solid var(--line);font-size:13px}.hist:last-child{border:0}.hist span{color:var(--muted)}
+.card{background:rgba(21,21,24,.94);border:1px solid var(--line);border-radius:20px;padding:4px 16px}.service{display:grid;grid-template-columns:13px 1fr auto auto;gap:11px;align-items:center;padding:15px 0;border-bottom:1px solid var(--line)}.service:last-child{border-bottom:0}.dot{width:12px;height:12px;border-radius:50%}.dot.r{background:var(--danger);box-shadow:0 0 10px #ff5b6355}.dot.y{background:var(--warn)}.dot.g{background:var(--ok)}.dot.n{background:#777}.name{font-weight:850;font-size:15px}.meta{font-size:12px;color:var(--muted);line-height:1.35;margin-top:3px}.badge{font-size:11px;font-weight:850;padding:6px 8px;border-radius:8px;background:#242428;white-space:nowrap}.donebtn{width:38px;height:38px;border-radius:12px;background:#242428;color:#fff;border:1px solid #333;display:grid;place-items:center;font-size:17px}.history{padding:8px 16px}.hist{padding:11px 0;border-bottom:1px solid var(--line);font-size:13px}.hist:last-child{border:0}.hist span{color:var(--muted)}
 .note{font-size:11px;color:#777;line-height:1.5;margin:18px 4px}.modal{position:fixed;inset:0;background:#000b;display:none;align-items:end;padding:12px;z-index:10}.modal.open{display:flex}.sheet{width:100%;max-width:700px;margin:auto;background:#1b1b1f;border:1px solid #34343a;border-radius:24px;padding:20px;box-shadow:0 -10px 50px #000}.sheet h2{margin:0 0 8px;font-size:22px}.sheet p{color:var(--muted);margin:0;line-height:1.45}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:18px}.actions button{padding:14px;border-radius:13px;border:0;font-weight:900}.cancel{background:#2a2a2e;color:#fff}.confirm{background:var(--accent);color:#111}
 </style>
 </head>
@@ -44,7 +44,7 @@
 <div class="section"><h2>Historik</h2><small>Seneste 20</small></div>
 <div class="card history" id="history"></div>
 
-<div class="note">Intervallerne er baseret på KTM's 2017 serviceplan for 50 SX/50 SX Mini. KTM oplyser, at intervaller og omfang kan ændres efter marked og tekniske opdateringer; den aktuelle KTM Dealer.net/serviceplan er den endelige reference.</div>
+<div class="note">⚪ Ikke registreret betyder, at appen endnu ikke kender sidste service. Det er ikke det samme som forfalden service. Når du markerer et punkt som udført, starter appen næste interval fra det aktuelle timetal.</div>
 </div>
 
 <div id="modal" class="modal"><div class="sheet"><h2 id="mtitle">Marker service som udført?</h2><p id="mtext"></p><div class="actions"><button class="cancel" onclick="closeModal()">Annuller</button><button class="confirm" onclick="confirmService()">Ja, udført</button></div></div></div>
@@ -69,11 +69,23 @@ if(!db)db={mikkel:{hours:155,last:{},history:[]},malthe:{hours:0,last:{},history
 function save(){try{localStorage.setItem("crossServiceAppV2",JSON.stringify(db))}catch(e){}}
 function switchBike(id){current=id;tm.classList.toggle("active",id==="mikkel");ta.classList.toggle("active",id==="malthe");render()}
 function updateHours(){const el=document.getElementById("hourInput"),v=Number(el.value.trim().replace(",","."));if(!Number.isFinite(v)||v<0){alert("Indtast et gyldigt timetal, f.eks. 156 eller 156,5.");return}if(v<db[current].hours&&!confirm("Det nye timetal er lavere end det nuværende. Fortsæt?"))return;db[current].hours=v;save();el.value="";render()}
-function state(t){const d=db[current],last=d.last[t.id];if(t.type==="first"&&last===undefined)return d.hours>=10?["r","Service nu"]:["g","Ved 10 t"];if(last===undefined)return["r","Ikke registreret"];const next=last+t.interval,rem=next-d.hours;if(rem<=0)return["r","Service nu"];if(rem<=3)return["y",`${rem.toFixed(1)} t tilbage`];return["g",`Næste ${next.toFixed(1)} t`]}
-function render(){const d=db[current],b=bikes[current];bikeName.textContent=b.name;bikeModel.textContent=b.model;hours.textContent=d.hours.toFixed(1);let c={r:0,y:0,g:0};tasks.forEach(t=>c[state(t)[0]]++);rc.textContent=c.r;yc.textContent=c.y;gc.textContent=c.g;
+function state(t){
+ const d=db[current],last=d.last[t.id];
+ if(last===undefined){
+   if(t.type==="first" && d.hours>=10) return["n","Ikke registreret"];
+   return["n","Ikke registreret"];
+ }
+ const next=last+t.interval,rem=next-d.hours;
+ if(rem<=0)return["r","Service nu"];
+ if(rem<=3)return["y",`${rem.toFixed(1)} t tilbage`];
+ return["g",`Næste ${next.toFixed(1)} t`];
+}
+function render(){const d=db[current],b=bikes[current];bikeName.textContent=b.name;bikeModel.textContent=b.model;hours.textContent=d.hours.toFixed(1);let c={r:0,y:0,g:0,n:0};tasks.forEach(t=>c[state(t)[0]]++);
+rc.textContent=c.r;yc.textContent=c.y;gc.textContent=c.g;
+document.querySelector(".section small").textContent=`${c.n} mangler historik · tryk ✓ når udført`;
 const completed=tasks.filter(t=>db[current].last[t.id]!==undefined).length;
 document.getElementById("progress").style.width=Math.round(completed/tasks.length*100)+"%";
-document.getElementById("progressText").textContent=Math.round(completed/tasks.length*100)+"%";
+document.getElementById("progressText").textContent=`${completed} / ${tasks.length} registreret`;
 services.innerHTML=tasks.map(t=>{const [cl,text]=state(t),last=d.last[t.id];return `<div class="service" onclick="openDetail('${t.id}')"><span class="dot ${cl}"></span><div><div class="name">${t.name}</div><div class="meta">${last!==undefined?`Sidst udført: ${last.toFixed(1)} t · `:""}${t.desc}</div></div><span class="badge">${text}</span><button class="donebtn" onclick="event.stopPropagation();openModal('${t.id}')">✓</button></div>`}).join("");
 history.innerHTML=d.history.length?d.history.slice(0,20).map(h=>`<div class="hist"><b>${h.name}</b> · ${h.hours.toFixed(1)} timer<br><span>${h.date}</span></div>`).join(""):"<div class='hist'><span>Ingen service registreret endnu.</span></div>"}
 
@@ -81,7 +93,7 @@ function openDetail(id){
  const t=tasks.find(x=>x.id===id),d=db[current],last=d.last[id];
  document.getElementById("dtitle").textContent=t.name;
  document.getElementById("ddesc").textContent=t.desc;
- if(last===undefined) document.getElementById("dnext").textContent=t.type==="first"?"Første gang ved 10 timer":`Første registrering mangler`;
+ if(last===undefined) document.getElementById("dnext").textContent="Sidste service ikke registreret endnu";
  else document.getElementById("dnext").textContent=`${(last+t.interval).toFixed(1)} timer`;
  document.getElementById("detail").classList.add("open");
  pending=t;
