@@ -20,7 +20,7 @@
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#0e0e10;border:1px solid #29292e;border-radius:14px;padding:11px}.stat b{font-size:25px;display:block}.stat span{font-size:12px;color:var(--muted)}
 .red{color:var(--danger)}.yellow{color:var(--warn)}.green{color:var(--ok)}.neutral{color:#c9c9cf}
 .section{display:flex;justify-content:space-between;align-items:center;margin:22px 3px 9px}.section h2{font-size:20px;margin:0;letter-spacing:-.02em}.section small{color:var(--muted)}
-.card{background:rgba(21,21,24,.94);border:1px solid var(--line);border-radius:20px;padding:4px 16px}.service{display:grid;grid-template-columns:13px 1fr auto auto;gap:11px;align-items:center;padding:15px 0;border-bottom:1px solid var(--line)}.service:last-child{border-bottom:0}.dot{width:12px;height:12px;border-radius:50%}.dot.r{background:var(--danger);box-shadow:0 0 10px #ff5b6355}.dot.y{background:var(--warn)}.dot.g{background:var(--ok)}.dot.n{background:#777}.name{font-weight:850;font-size:15px}.meta{font-size:12px;color:var(--muted);line-height:1.35;margin-top:3px}.badge{font-size:11px;font-weight:850;padding:6px 8px;border-radius:8px;background:#242428;white-space:nowrap}.donebtn{width:38px;height:38px;border-radius:12px;background:#242428;color:#fff;border:1px solid #333;display:grid;place-items:center;font-size:17px}.history{padding:8px 16px}.hist{padding:11px 0;border-bottom:1px solid var(--line);font-size:13px}.hist:last-child{border:0}.hist span{color:var(--muted)}
+.card{background:rgba(21,21,24,.94);border:1px solid var(--line);border-radius:20px;padding:4px 16px}.service{display:grid;grid-template-columns:13px 1fr auto auto;gap:11px;align-items:center;padding:15px 0;border-bottom:1px solid var(--line)}.service:last-child{border-bottom:0}.dot{width:12px;height:12px;border-radius:50%}.dot.r{background:var(--danger);box-shadow:0 0 10px #ff5b6355}.dot.y{background:var(--warn)}.dot.g{background:var(--ok)}.dot.n{background:#777}.name{font-weight:850;font-size:15px}.meta{font-size:12px;color:var(--muted);line-height:1.35;margin-top:3px}.badge{font-size:11px;font-weight:850;padding:6px 8px;border-radius:8px;background:#242428;color:#ddd;white-space:nowrap}.donebtn{width:38px;height:38px;border-radius:12px;background:#242428;color:#fff;border:1px solid #333;display:grid;place-items:center;font-size:17px}.history{padding:8px 16px}.hist{padding:11px 0;border-bottom:1px solid var(--line);font-size:13px}.hist:last-child{border:0}.hist span{color:var(--muted)}
 .note{font-size:11px;color:#777;line-height:1.5;margin:18px 4px}.modal{position:fixed;inset:0;background:#000b;display:none;align-items:end;padding:12px;z-index:10}.modal.open{display:flex}.sheet{width:100%;max-width:700px;margin:auto;background:#1b1b1f;border:1px solid #34343a;border-radius:24px;padding:20px;box-shadow:0 -10px 50px #000}.sheet h2{margin:0 0 8px;font-size:22px}.sheet p{color:var(--muted);margin:0;line-height:1.45}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:18px}.actions button{padding:14px;border-radius:13px;border:0;font-weight:900}.cancel{background:#2a2a2e;color:#fff}.confirm{background:var(--accent);color:#111}
 </style>
 </head>
@@ -33,7 +33,7 @@
 <section class="hero">
 <div class="bike"><div class="avatar">🏁</div><div><b id="bikeName">Mikkel</b><small id="bikeModel">KTM 50 SX · 2017</small></div></div>
 <div class="timerow"><div><div class="eyebrow">Aktuelle timer</div><div class="hours"><span id="hours">155.0</span> <small>timer</small></div></div></div>
-<form class="update" onsubmit="updateHours();return false"><input id="hourInput" inputmode="decimal" autocomplete="off" placeholder="Nyt timetal"><button class="primary" type="submit">Gem</button></form>
+<form class="update" onsubmit="updateHours();return false"><input id="hourInput" inputmode="decimal" autocomplete="off" placeholder="Nyt timetal"><button class="primary" type="submit">Gem</button></form><button style="width:100%;margin-top:9px;background:#242428;color:#fff;border:1px solid #35353b" onclick="openSetup()">⚙️ Start / ret historik</button>
 <div class="stats" style="margin-top:14px"><div class="stat"><b id="rc" class="red">0</b><span>Service nu</span></div><div class="stat"><b id="yc" class="yellow">0</b><span>Snart</span></div><div class="stat"><b id="gc" class="green">0</b><span>OK</span></div></div>
 <div style="margin-top:15px"><div style="display:flex;justify-content:space-between;font-size:12px;color:#9b9ba2"><span>Serviceplan</span><span id="progressText">0%</span></div><div style="height:7px;background:#29292e;border-radius:99px;overflow:hidden;margin-top:6px"><div id="progress" style="height:100%;width:0;background:#e9ff4f;border-radius:99px"></div></div></div>
 </section>
@@ -72,7 +72,6 @@ function updateHours(){const el=document.getElementById("hourInput"),v=Number(el
 function state(t){
  const d=db[current],last=d.last[t.id];
  if(last===undefined){
-   if(t.type==="first" && d.hours>=10) return["n","Ikke registreret"];
    return["n","Ikke registreret"];
  }
  const next=last+t.interval,rem=next-d.hours;
@@ -100,6 +99,27 @@ function openDetail(id){
 }
 function closeDetail(){document.getElementById("detail").classList.remove("open");pending=null}
 function openCompleteFromDetail(){document.getElementById("detail").classList.remove("open");if(pending)openModal(pending.id)}
+
+function openSetup(){
+ const d=db[current],b=bikes[current];
+ document.getElementById("setupText").textContent=`Sæt historikken op ud fra ${d.hours.toFixed(1)} aktuelle timer. Sæt kun flueben ved det, du med sikkerhed ved er lavet. Appen bruger ${d.hours.toFixed(1)} t som seneste udførelse.`;
+ document.getElementById("setupList").innerHTML=tasks.map(t=>{
+   const checked=d.last[t.id]!==undefined?"checked":"";
+   return `<label style="display:flex;gap:10px;align-items:flex-start;padding:11px 0;border-bottom:1px solid #29292e">
+   <input class="setupCheck" data-id="${t.id}" type="checkbox" ${checked} style="width:20px;height:20px;margin-top:2px;accent-color:#e9ff4f">
+   <span><b>${t.name}</b><br><span class="small">${t.interval?`Næste interval: ${t.interval} t · `:""}${t.desc}</span></span></label>`;
+ }).join("");
+ document.getElementById("setup").classList.add("open");
+}
+function closeSetup(){document.getElementById("setup").classList.remove("open")}
+function saveSetup(){
+ const d=db[current],h=d.hours;
+ document.querySelectorAll(".setupCheck").forEach(ch=>{
+   const id=ch.dataset.id;
+   if(ch.checked)d.last[id]=h; else delete d.last[id];
+ });
+ save();closeSetup();render();
+}
 function openModal(id){pending=tasks.find(t=>t.id===id);mtitle.textContent=`Marker "${pending.name}" som udført?`;mtext.textContent=`Service registreres automatisk ved ${db[current].hours.toFixed(1)} motortimer for ${bikes[current].name}.`;modal.classList.add("open")}
 function closeModal(){pending=null;modal.classList.remove("open")}
 function confirmService(){if(!pending)return;const d=db[current];d.last[pending.id]=d.hours;d.history.unshift({name:pending.name,hours:d.hours,date:new Date().toLocaleString("da-DK")});save();closeModal();render()}
@@ -115,5 +135,13 @@ if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch((
 <div class="small">Næste interval</div><div id="dnext" style="font-size:25px;font-weight:900;margin-top:3px"></div>
 </div>
 <div class="actions"><button class="cancel" onclick="closeDetail()">Luk</button><button class="confirm" onclick="openCompleteFromDetail()">✓ Markér udført</button></div>
+</div></div>
+
+<div id="setup" class="modal"><div class="sheet">
+<div class="eyebrow">Første opsætning</div>
+<h2>Hvad er allerede lavet?</h2>
+<p id="setupText"></p>
+<div id="setupList" style="margin-top:14px"></div>
+<div class="actions"><button class="cancel" onclick="closeSetup()">Annuller</button><button class="confirm" onclick="saveSetup()">Gem valgte</button></div>
 </div></div>
 </body></html>
