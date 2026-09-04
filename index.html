@@ -44,7 +44,7 @@
 <div class="section"><h2>Historik</h2><small>Seneste 20</small></div>
 <div class="card history" id="history"></div>
 
-<div class="note">⚪ Ikke registreret betyder, at appen endnu ikke kender sidste service. Det er ikke det samme som forfalden service. Når du markerer et punkt som udført, starter appen næste interval fra det aktuelle timetal.</div>
+<div class="note">Version 7 · ⚪ Ikke registreret betyder, at appen endnu ikke kender sidste service. Det er ikke det samme som forfalden service. Når du markerer et punkt som udført, starter appen næste interval fra det aktuelle timetal.</div>
 </div>
 
 <div id="modal" class="modal"><div class="sheet"><h2 id="mtitle">Marker service som udført?</h2><p id="mtext"></p><div class="actions"><button class="cancel" onclick="closeModal()">Annuller</button><button class="confirm" onclick="confirmService()">Ja, udført</button></div></div></div>
@@ -54,7 +54,7 @@ const bikes={mikkel:{name:"Mikkel",model:"KTM 50 SX · 2017",hours:155},malthe:{
 const tasks=[
 {id:"s10",name:"10-timers kontrol",interval:10,type:"first",desc:"Bremser, dæk, eger, kæde, tandhjul, lejer, styring, skruer, kabler m.m."},
 {id:"air",name:"Luftfilter + filterkasse",interval:10,type:"recurring",desc:"Rengør/servicér filter og filterkasse."},
-{id:"gear",name:"Gearolie",interval:20,type:"recurring",desc:"Skift gearolie; kontroller niveau efter planen."},
+{id:"gear",name:"Gearolie",interval:5,type:"recurring",desc:"Skift gearolie for hver 5 motortimer."},
 {id:"brake",name:"Bremsevæske",interval:20,type:"recurring",desc:"For- og bagbremsevæske efter serviceplan."},
 {id:"fork",name:"Forgaffelservice",interval:20,type:"recurring",desc:"Service af forgaffel."},
 {id:"shock",name:"Bagdæmperservice",interval:20,type:"recurring",desc:"Service af bagdæmper."},
