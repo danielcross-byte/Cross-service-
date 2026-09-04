@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0d0d0f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<title>Cross Service</title>
+<style>
+:root{--bg:#0b0b0d;--panel:#151518;--panel2:#1c1c20;--text:#f6f6f4;--muted:#9b9ba2;--line:#29292e;--accent:#e9ff4f;--danger:#ff5b63;--warn:#ffc857;--ok:#56d37b}
+*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:linear-gradient(180deg,#0b0b0d 0,#121216 52%,#0b0b0d 100%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;min-height:100vh}
+.app{max-width:720px;margin:auto;padding:calc(18px + env(safe-area-inset-top)) 16px calc(34px + env(safe-area-inset-bottom))}
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:800}.title{font-size:30px;line-height:1.05;font-weight:900;letter-spacing:-.04em;margin-top:4px}.title span{color:var(--accent)}
+.iconbtn{width:42px;height:42px;padding:0;border:1px solid var(--line);background:var(--panel);color:#fff;border-radius:14px;font-size:18px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;background:#17171a;border:1px solid var(--line);padding:4px;border-radius:16px;margin-bottom:14px}.tab{background:transparent;color:var(--muted);padding:11px 8px;border-radius:12px;font-weight:800}.tab.active{background:#f4f4ef;color:#111}
+.hero{background:linear-gradient(145deg,#202024,#111114);border:1px solid #303037;border-radius:24px;padding:20px;box-shadow:0 16px 50px #0008;margin-bottom:12px}.bike{display:flex;gap:12px;align-items:center}.avatar{width:48px;height:48px;border-radius:15px;background:var(--accent);display:grid;place-items:center;color:#111;font-size:25px}.bike b{font-size:18px}.bike small{display:block;color:var(--muted);margin-top:2px}
+.timerow{display:flex;align-items:end;justify-content:space-between;margin:22px 0 16px}.hours{font-size:58px;font-weight:900;letter-spacing:-.055em;line-height:.9}.hours small{font-size:15px;color:var(--muted);letter-spacing:0;font-weight:700}.update{display:flex;gap:8px}.update input{flex:1;min-width:0;background:#0d0d0f;border:1px solid #36363c;color:#fff;border-radius:13px;padding:13px 14px;font-size:18px;outline:none}.update input:focus{border-color:#777}.primary{background:var(--accent);color:#111;border:0;border-radius:13px;padding:13px 16px;font-weight:900}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#0e0e10;border:1px solid #29292e;border-radius:14px;padding:11px}.stat b{font-size:25px;display:block}.stat span{font-size:12px;color:var(--muted)}
+.red{color:var(--danger)}.yellow{color:var(--warn)}.green{color:var(--ok)}
+.section{display:flex;justify-content:space-between;align-items:center;margin:22px 3px 9px}.section h2{font-size:20px;margin:0;letter-spacing:-.02em}.section small{color:var(--muted)}
+.card{background:rgba(21,21,24,.94);border:1px solid var(--line);border-radius:20px;padding:4px 16px}.service{display:grid;grid-template-columns:13px 1fr auto auto;gap:11px;align-items:center;padding:15px 0;border-bottom:1px solid var(--line)}.service:last-child{border-bottom:0}.dot{width:12px;height:12px;border-radius:50%}.dot.r{background:var(--danger);box-shadow:0 0 10px #ff5b6355}.dot.y{background:var(--warn)}.dot.g{background:var(--ok)}.name{font-weight:850;font-size:15px}.meta{font-size:12px;color:var(--muted);line-height:1.35;margin-top:3px}.badge{font-size:11px;font-weight:850;padding:6px 8px;border-radius:8px;background:#242428;white-space:nowrap}.donebtn{width:38px;height:38px;border-radius:12px;background:#242428;color:#fff;border:1px solid #333;display:grid;place-items:center;font-size:17px}.history{padding:8px 16px}.hist{padding:11px 0;border-bottom:1px solid var(--line);font-size:13px}.hist:last-child{border:0}.hist span{color:var(--muted)}
+.note{font-size:11px;color:#777;line-height:1.5;margin:18px 4px}.modal{position:fixed;inset:0;background:#000b;display:none;align-items:end;padding:12px;z-index:10}.modal.open{display:flex}.sheet{width:100%;max-width:700px;margin:auto;background:#1b1b1f;border:1px solid #34343a;border-radius:24px;padding:20px;box-shadow:0 -10px 50px #000}.sheet h2{margin:0 0 8px;font-size:22px}.sheet p{color:var(--muted);margin:0;line-height:1.45}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:18px}.actions button{padding:14px;border-radius:13px;border:0;font-weight:900}.cancel{background:#2a2a2e;color:#fff}.confirm{background:var(--accent);color:#111}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="header"><div><div class="eyebrow">Garage · vedligeholdelse</div><div class="title">Cross <span>Service</span></div></div><button class="iconbtn" onclick="resetAll()" aria-label="Nulstil">↺</button></header>
+
+<div class="tabs"><button id="tm" class="tab active" onclick="switchBike('mikkel')">Mikkel · 50 SX</button><button id="ta" class="tab" onclick="switchBike('malthe')">Malthe · 50 SX Mini</button></div>
+
+<section class="hero">
+<div class="bike"><div class="avatar">🏁</div><div><b id="bikeName">Mikkel</b><small id="bikeModel">KTM 50 SX · 2017</small></div></div>
+<div class="timerow"><div><div class="eyebrow">Aktuelle timer</div><div class="hours"><span id="hours">155.0</span> <small>timer</small></div></div></div>
+<form class="update" onsubmit="updateHours();return false"><input id="hourInput" inputmode="decimal" autocomplete="off" placeholder="Nyt timetal"><button class="primary" type="submit">Gem</button></form>
+<div class="stats" style="margin-top:14px"><div class="stat"><b id="rc" class="red">0</b><span>Service nu</span></div><div class="stat"><b id="yc" class="yellow">0</b><span>Snart</span></div><div class="stat"><b id="gc" class="green">0</b><span>OK</span></div></div>
+<div style="margin-top:15px"><div style="display:flex;justify-content:space-between;font-size:12px;color:#9b9ba2"><span>Serviceplan</span><span id="progressText">0%</span></div><div style="height:7px;background:#29292e;border-radius:99px;overflow:hidden;margin-top:6px"><div id="progress" style="height:100%;width:0;background:#e9ff4f;border-radius:99px"></div></div></div>
+</section>
+
+<div class="section"><h2>Serviceplan</h2><small>Tryk ✓ når det er udført</small></div>
+<div class="card" id="services"></div>
+
+<div class="section"><h2>Historik</h2><small>Seneste 20</small></div>
+<div class="card history" id="history"></div>
+
+<div class="note">Intervallerne er baseret på KTM's 2017 serviceplan for 50 SX/50 SX Mini. KTM oplyser, at intervaller og omfang kan ændres efter marked og tekniske opdateringer; den aktuelle KTM Dealer.net/serviceplan er den endelige reference.</div>
+</div>
+
+<div id="modal" class="modal"><div class="sheet"><h2 id="mtitle">Marker service som udført?</h2><p id="mtext"></p><div class="actions"><button class="cancel" onclick="closeModal()">Annuller</button><button class="confirm" onclick="confirmService()">Ja, udført</button></div></div></div>
+
+<script>
+const bikes={mikkel:{name:"Mikkel",model:"KTM 50 SX · 2017",hours:155},malthe:{name:"Malthe",model:"KTM 50 SX Mini · 2022",hours:0}};
+const tasks=[
+{id:"s10",name:"10-timers kontrol",interval:10,type:"first",desc:"Bremser, dæk, eger, kæde, tandhjul, lejer, styring, skruer, kabler m.m."},
+{id:"air",name:"Luftfilter + filterkasse",interval:10,type:"recurring",desc:"Rengør/servicér filter og filterkasse."},
+{id:"gear",name:"Gearolie",interval:20,type:"recurring",desc:"Skift gearolie; kontroller niveau efter planen."},
+{id:"brake",name:"Bremsevæske",interval:20,type:"recurring",desc:"For- og bagbremsevæske efter serviceplan."},
+{id:"fork",name:"Forgaffelservice",interval:20,type:"recurring",desc:"Service af forgaffel."},
+{id:"shock",name:"Bagdæmperservice",interval:20,type:"recurring",desc:"Service af bagdæmper."},
+{id:"steer",name:"Styrehovedleje",interval:20,type:"recurring",desc:"Kontroller og smør styrehovedleje."},
+{id:"carb",name:"Karburator",interval:20,type:"recurring",desc:"Kontroller/juster karburatorkomponenter."},
+{id:"minor",name:"40-timers motorservice",interval:40,type:"recurring",desc:"Tændrør + kontrol af cylinder, stempel og indsugningsmembran."},
+{id:"major",name:"80-timers motorservice",interval:80,type:"recurring",desc:"Større motorservice efter KTM-planen."}
+];
+let current="mikkel",pending=null,db;
+try{db=JSON.parse(localStorage.getItem("crossServiceAppV2")||"null")}catch(e){db=null}
+if(!db)db={mikkel:{hours:155,last:{},history:[]},malthe:{hours:0,last:{},history:[]}};
+function save(){try{localStorage.setItem("crossServiceAppV2",JSON.stringify(db))}catch(e){}}
+function switchBike(id){current=id;tm.classList.toggle("active",id==="mikkel");ta.classList.toggle("active",id==="malthe");render()}
+function updateHours(){const el=document.getElementById("hourInput"),v=Number(el.value.trim().replace(",","."));if(!Number.isFinite(v)||v<0){alert("Indtast et gyldigt timetal, f.eks. 156 eller 156,5.");return}if(v<db[current].hours&&!confirm("Det nye timetal er lavere end det nuværende. Fortsæt?"))return;db[current].hours=v;save();el.value="";render()}
+function state(t){const d=db[current],last=d.last[t.id];if(t.type==="first"&&last===undefined)return d.hours>=10?["r","Service nu"]:["g","Ved 10 t"];if(last===undefined)return["r","Ikke registreret"];const next=last+t.interval,rem=next-d.hours;if(rem<=0)return["r","Service nu"];if(rem<=3)return["y",`${rem.toFixed(1)} t tilbage`];return["g",`Næste ${next.toFixed(1)} t`]}
+function render(){const d=db[current],b=bikes[current];bikeName.textContent=b.name;bikeModel.textContent=b.model;hours.textContent=d.hours.toFixed(1);let c={r:0,y:0,g:0};tasks.forEach(t=>c[state(t)[0]]++);rc.textContent=c.r;yc.textContent=c.y;gc.textContent=c.g;
+const completed=tasks.filter(t=>db[current].last[t.id]!==undefined).length;
+document.getElementById("progress").style.width=Math.round(completed/tasks.length*100)+"%";
+document.getElementById("progressText").textContent=Math.round(completed/tasks.length*100)+"%";
+services.innerHTML=tasks.map(t=>{const [cl,text]=state(t),last=d.last[t.id];return `<div class="service" onclick="openDetail('${t.id}')"><span class="dot ${cl}"></span><div><div class="name">${t.name}</div><div class="meta">${last!==undefined?`Sidst udført: ${last.toFixed(1)} t · `:""}${t.desc}</div></div><span class="badge">${text}</span><button class="donebtn" onclick="event.stopPropagation();openModal('${t.id}')">✓</button></div>`}).join("");
+history.innerHTML=d.history.length?d.history.slice(0,20).map(h=>`<div class="hist"><b>${h.name}</b> · ${h.hours.toFixed(1)} timer<br><span>${h.date}</span></div>`).join(""):"<div class='hist'><span>Ingen service registreret endnu.</span></div>"}
+
+function openDetail(id){
+ const t=tasks.find(x=>x.id===id),d=db[current],last=d.last[id];
+ document.getElementById("dtitle").textContent=t.name;
+ document.getElementById("ddesc").textContent=t.desc;
+ if(last===undefined) document.getElementById("dnext").textContent=t.type==="first"?"Første gang ved 10 timer":`Første registrering mangler`;
+ else document.getElementById("dnext").textContent=`${(last+t.interval).toFixed(1)} timer`;
+ document.getElementById("detail").classList.add("open");
+ pending=t;
+}
+function closeDetail(){document.getElementById("detail").classList.remove("open");pending=null}
+function openCompleteFromDetail(){document.getElementById("detail").classList.remove("open");if(pending)openModal(pending.id)}
+function openModal(id){pending=tasks.find(t=>t.id===id);mtitle.textContent=`Marker "${pending.name}" som udført?`;mtext.textContent=`Service registreres automatisk ved ${db[current].hours.toFixed(1)} motortimer for ${bikes[current].name}.`;modal.classList.add("open")}
+function closeModal(){pending=null;modal.classList.remove("open")}
+function confirmService(){if(!pending)return;const d=db[current];d.last[pending.id]=d.hours;d.history.unshift({name:pending.name,hours:d.hours,date:new Date().toLocaleString("da-DK")});save();closeModal();render()}
+function resetAll(){if(confirm("Nulstil alle timer og servicehistorik?")){db={mikkel:{hours:155,last:{},history:[]},malthe:{hours:0,last:{},history:[]}};save();render()}}
+render();
+if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+</script>
+
+<div id="detail" class="modal"><div class="sheet">
+<div style="display:flex;justify-content:space-between;gap:12px;align-items:start"><div><div class="eyebrow">Servicepunkt</div><h2 id="dtitle">Detaljer</h2></div><button class="iconbtn" onclick="closeDetail()">×</button></div>
+<div id="ddesc" class="small" style="margin:10px 0 15px"></div>
+<div class="card" style="padding:14px;background:#111116">
+<div class="small">Næste interval</div><div id="dnext" style="font-size:25px;font-weight:900;margin-top:3px"></div>
+</div>
+<div class="actions"><button class="cancel" onclick="closeDetail()">Luk</button><button class="confirm" onclick="openCompleteFromDetail()">✓ Markér udført</button></div>
+</div></div>
+</body></html>
