@@ -52,28 +52,69 @@
 <script>
 const bikes={mikkel:{name:"Mikkel",model:"KTM 50 SX · 2017",hours:155},malthe:{name:"Malthe",model:"KTM 50 SX Mini · 2022",hours:0}};
 const tasks=[
-{id:"s10",name:"10-timers kontrol",interval:10,type:"first",desc:"Bremser, dæk, eger, kæde, tandhjul, lejer, styring, skruer, kabler m.m."},
-{id:"air",name:"Luftfilter + filterkasse",interval:10,type:"recurring",desc:"Rengør/servicér filter og filterkasse."},
-{id:"gear",name:"Gearolie",interval:5,type:"recurring",desc:"Skift gearolie for hver 5 motortimer."},
-{id:"brake",name:"Bremsevæske",interval:20,type:"recurring",desc:"For- og bagbremsevæske efter serviceplan."},
-{id:"fork",name:"Forgaffelservice",interval:20,type:"recurring",desc:"Service af forgaffel."},
-{id:"shock",name:"Bagdæmperservice",interval:20,type:"recurring",desc:"Service af bagdæmper."},
-{id:"steer",name:"Styrehovedleje",interval:20,type:"recurring",desc:"Kontroller og smør styrehovedleje."},
-{id:"carb",name:"Karburator",interval:20,type:"recurring",desc:"Kontroller/juster karburatorkomponenter."},
-{id:"minor",name:"40-timers motorservice",interval:40,type:"recurring",desc:"Tændrør + kontrol af cylinder, stempel og indsugningsmembran."},
-{id:"major",name:"80-timers motorservice",interval:80,type:"recurring",desc:"Større motorservice efter KTM-planen."}
+{id:"r_frontpads",name:"Forbremseklodser",interval:20,type:"recurring",cat:"Kontrol",desc:"Kontroller slid og stand på forreste bremseklodser."},
+{id:"r_rearpads",name:"Bagbremseklodser",interval:20,type:"recurring",cat:"Kontrol",desc:"Kontroller slid og stand på bageste bremseklodser."},
+{id:"r_discs",name:"Bremseskiver",interval:20,type:"recurring",cat:"Kontrol",desc:"Kontroller bremseskiver for slid og skader."},
+{id:"r_brakelines",name:"Bremseslanger",interval:20,type:"recurring",cat:"Kontrol",desc:"Kontroller for skader og lækager."},
+{id:"r_rearfluidlevel",name:"Bremsevæskeniveau bag",interval:20,type:"recurring",cat:"Kontrol",desc:"Kontroller niveauet i bagbremsens beholder."},
+{id:"r_footbrake",name:"Frigang på bagbremsepedal",interval:20,type:"recurring",cat:"Kontrol",desc:"Kontroller pedalens frie vandring."},
+{id:"r_frame",name:"Stel og svingarm",interval:20,type:"recurring",cat:"Chassis",desc:"Kontroller for revner, skader og løshed."},
+{id:"r_swingbearing",name:"Svingarmsleje",interval:20,type:"recurring",cat:"Chassis",desc:"Kontroller lejet for slør."},
+{id:"r_heim",name:"Støddæmper-led/heim joints",interval:20,type:"recurring",cat:"Chassis",desc:"Kontroller øvre og nedre led for slør og skade."},
+{id:"r_tires",name:"Dæktilstand",interval:20,type:"recurring",cat:"Hjul",desc:"Kontroller slid, skader og generel stand."},
+{id:"r_pressure",name:"Dæktryk",interval:20,type:"recurring",cat:"Hjul",desc:"Kontroller dæktrykket før kørsel og ved service."},
+{id:"r_wheelbearing",name:"Hjullejer",interval:20,type:"recurring",cat:"Hjul",desc:"Kontroller hjullejer for slør."},
+{id:"r_hubs",name:"Hjulnav",interval:20,type:"recurring",cat:"Hjul",desc:"Kontroller hjulnav for skade og løshed."},
+{id:"r_rim",name:"Fælgkast",interval:20,type:"recurring",cat:"Hjul",desc:"Kontroller fælgens radialt/laterale kast."},
+{id:"r_spokes",name:"Eger",interval:20,type:"recurring",cat:"Hjul",desc:"Kontroller egernes spænding."},
+{id:"r_drive",name:"Kæde, tandhjul og kædeføring",interval:20,type:"recurring",cat:"Drivlinje",desc:"Kontroller slid, skade og fastgørelse."},
+{id:"r_chaintension",name:"Kædespænding",interval:20,type:"recurring",cat:"Drivlinje",desc:"Kontroller og juster kædespændingen efter KTM-specifikation."},
+{id:"r_lube",name:"Smøring af bevægelige dele",interval:20,type:"recurring",cat:"Smøring",desc:"Smør relevante bevægelige dele og kontroller fri bevægelse."},
+{id:"r_frontfluid",name:"Bremsevæskeniveau for",interval:20,type:"recurring",cat:"Kontrol",desc:"Kontroller niveauet i forbremsebeholderen."},
+{id:"r_handbrake",name:"Frigang på håndbremsegreb",interval:20,type:"recurring",cat:"Kontrol",desc:"Kontroller korrekt frigang."},
+{id:"r_steerplay",name:"Styrehovedleje – slør",interval:20,type:"recurring",cat:"Chassis",desc:"Kontroller slør i styrehovedlejet."},
+{id:"gear",name:"Gearolie",interval:5,type:"recurring",cat:"Motor",desc:"Skift gearolie for hver 5 motortimer (brugerens valgte interval)."},
+{id:"r_gearlevel",name:"Gearolieniveau",interval:20,type:"recurring",cat:"Motor",desc:"Kontroller gearolieniveau."},
+{id:"r_hoses",name:"Slanger og manchetter",interval:20,type:"recurring",cat:"Kontrol",desc:"Kontroller brændstof-, køle-, udluftnings- og drænslanger for revner, lækager og forkert føring."},
+{id:"r_coolant",name:"Kølevæskeniveau",interval:20,type:"recurring",cat:"Køling",desc:"Kontroller frostvæske/kølevæskeniveau."},
+{id:"r_cables",name:"Kabler",interval:20,type:"recurring",cat:"Kontrol",desc:"Kontroller kabler for skader og skarpe knæk."},
+{id:"r_throttlecable",name:"Gaskabel",interval:20,type:"recurring",cat:"Kontrol",desc:"Kontroller skader, føring og korrekt indstilling."},
+{id:"r_airfilter",name:"Luftfilter + filterkasse",interval:20,type:"recurring",cat:"Indsugning",desc:"Rengør luftfilter og filterkasse. Kontroller korrekt montering."},
+{id:"r_silencer",name:"Glasfiberfyldning i hovedlyddæmper",interval:40,type:"recurring",cat:"Udstødning",desc:"Udskift glasfiberfyldningen efter KTM-serviceplanen."},
+{id:"r_fasteners",name:"Skruer og møtrikker",interval:20,type:"recurring",cat:"Kontrol",desc:"Kontroller at relevante skruer og møtrikker er spændt."},
+{id:"r_idle",name:"Tomgang",interval:20,type:"recurring",cat:"Motor",desc:"Kontroller tomgang."},
+{id:"r_clutch",name:"Koblingsindstilling",interval:20,type:"recurring",cat:"Motor",desc:"Kontroller koblingsindstillingen."},
+{id:"r_final",name:"Slutkontrol og prøvetur",interval:20,type:"recurring",cat:"Sikkerhed",desc:"Kontroller sikker funktion og udfør prøvetur."},
+{id:"r_entry",name:"Service registreret",interval:20,type:"recurring",cat:"Dokumentation",desc:"Registrer servicen i servicebog/KTM Dealer.net efter relevant service."},
+{id:"a_frontfluid",name:"Skift forbremsevæske",annual:true,type:"annual",cat:"Årligt",desc:"Udskift forbremsevæske årligt."},
+{id:"a_rearfluid",name:"Skift bagbremsevæske",annual:true,type:"annual",cat:"Årligt",desc:"Udskift bagbremsevæske årligt."},
+{id:"fork",name:"Forgaffelservice",interval:40,type:"recurring",cat:"Affjedring",desc:"Service af forgaffel efter KTM-planen."},
+{id:"shock",name:"Bagdæmperservice",interval:40,type:"recurring",cat:"Affjedring",desc:"Service af bagdæmper efter KTM-planen."},
+{id:"a_steer",name:"Smør styrehovedleje",annual:true,type:"annual",cat:"Årligt",desc:"Rengør/efterse og smør styrehovedlejet årligt."},
+{id:"a_carb",name:"Kontrol/justering af karburator",annual:true,type:"annual",cat:"Årligt",desc:"Kontroller/juster karburatorkomponenter årligt."},
+{id:"minor",name:"Mindre motorservice",interval:20,type:"recurring",cat:"Motor",desc:"Skift tændrør; kontroller cylinder, stempel og indsugningsmembran."},
+{id:"major",name:"Større motorservice",interval:40,type:"recurring",cat:"Motor",desc:"Kontroller kobling; skift stempel; kontroller/skift plejlstang, plejlstangsleje og krumtappind; kontroller transmission; skift tændrørshætte; skift krumtap- og øvrige motorlejer efter KTM-planen."},
+{id:"first10",name:"Første 10-timers service",type:"first",cat:"Første service",desc:"KTM's engangsservice efter de første 10 driftstimer. Mange af de grundlæggende kontrolpunkter indgår i denne service."}
 ];
 let current="mikkel",pending=null,db;
 try{db=JSON.parse(localStorage.getItem("crossServiceAppV2")||"null")}catch(e){db=null}
-if(!db)db={mikkel:{hours:155,last:{},history:[]},malthe:{hours:0,last:{},history:[]}};
+if(!db)db={mikkel:{hours:155,last:{},lastDate:{},history:[]},malthe:{hours:0,last:{},lastDate:{},history:[]}};
 function save(){try{localStorage.setItem("crossServiceAppV2",JSON.stringify(db))}catch(e){}}
 function switchBike(id){current=id;tm.classList.toggle("active",id==="mikkel");ta.classList.toggle("active",id==="malthe");render()}
 function updateHours(){const el=document.getElementById("hourInput"),v=Number(el.value.trim().replace(",","."));if(!Number.isFinite(v)||v<0){alert("Indtast et gyldigt timetal, f.eks. 156 eller 156,5.");return}if(v<db[current].hours&&!confirm("Det nye timetal er lavere end det nuværende. Fortsæt?"))return;db[current].hours=v;save();el.value="";render()}
 function state(t){
  const d=db[current],last=d.last[t.id];
- if(last===undefined){
-   return["n","Ikke registreret"];
+ if(t.type==="first") return last===undefined?["n","Ikke registreret"]:["g","Udført"];
+ if(t.annual){
+   if(last===undefined)return["n","Ikke registreret"];
+   const lastDate=new Date(d.lastDate?.[t.id]||0);
+   const due=new Date(lastDate); due.setFullYear(due.getFullYear()+1);
+   const days=Math.ceil((due-new Date())/86400000);
+   if(days<=0)return["r","Årligt service nu"];
+   if(days<=30)return["y",`${days} dage tilbage`];
+   return["g","Årligt OK"];
  }
+ if(last===undefined)return["n","Ikke registreret"];
  const next=last+t.interval,rem=next-d.hours;
  if(rem<=0)return["r","Service nu"];
  if(rem<=3)return["y",`${rem.toFixed(1)} t tilbage`];
@@ -122,8 +163,8 @@ function saveSetup(){
 }
 function openModal(id){pending=tasks.find(t=>t.id===id);mtitle.textContent=`Marker "${pending.name}" som udført?`;mtext.textContent=`Service registreres automatisk ved ${db[current].hours.toFixed(1)} motortimer for ${bikes[current].name}.`;modal.classList.add("open")}
 function closeModal(){pending=null;modal.classList.remove("open")}
-function confirmService(){if(!pending)return;const d=db[current];d.last[pending.id]=d.hours;d.history.unshift({name:pending.name,hours:d.hours,date:new Date().toLocaleString("da-DK")});save();closeModal();render()}
-function resetAll(){if(confirm("Nulstil alle timer og servicehistorik?")){db={mikkel:{hours:155,last:{},history:[]},malthe:{hours:0,last:{},history:[]}};save();render()}}
+function confirmService(){if(!pending)return;const d=db[current];d.last[pending.id]=d.hours;if(pending.annual){d.lastDate=d.lastDate||{};d.lastDate[pending.id]=new Date().toISOString()}d.history.unshift({name:pending.name,hours:d.hours,date:new Date().toLocaleString("da-DK")});save();closeModal();render()}
+function resetAll(){if(confirm("Nulstil alle timer og servicehistorik?")){db={mikkel:{hours:155,last:{},lastDate:{},history:[]},malthe:{hours:0,last:{},lastDate:{},history:[]}};save();render()}}
 render();
 if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
 </script>
