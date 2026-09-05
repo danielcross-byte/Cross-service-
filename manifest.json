@@ -1,9 +1,1 @@
-{
-  "name": "Cross Service – KTM",
-  "short_name": "Cross Service",
-  "start_url": "./",
-  "display": "standalone",
-  "background_color": "#0b0b0d",
-  "theme_color": "#0b0b0d",
-  "lang": "da"
-}
+{"name":"Cross Service","short_name":"Cross Service","start_url":"./","display":"standalone","background_color":"#08090b","theme_color":"#08090b","icons":[]}
