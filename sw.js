@@ -1,4 +1,4 @@
-const CACHE='cross-service-v43';
+const CACHE='cross-service-v44';
 const CORE=['./','./index.html','./manifest.json','./bike_highres_crop.png'];
 const DETAIL=['gear','airfilter','chain','frontbrake','tire','spark','carb','piston','exhaust','cooling','suspension','steering'].map(x=>`./${x}.jpg`);
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE.concat(DETAIL))))});
